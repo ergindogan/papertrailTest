@@ -1,0 +1,29 @@
+<configuration debug="true">
+    <appender name="PAPERTRAIL" class="com.papertrailapp.logback.Syslog4jAppender">
+        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+            <layout class="com.test.myapplication.AlbertAndroidPapertrailLayout" />
+        </encoder>
+
+        <syslogConfig class="org.productivity.java.syslog4j.impl.net.tcp.ssl.SSLTCPNetSyslogConfig">
+            <host>logsX.papertrailapp.com</host>
+            <port>XXXXX</port>
+            <facility>USER</facility>
+            <sendLocalName>false</sendLocalName>
+            <sendLocalTimestamp>false</sendLocalTimestamp>
+            <maxMessageLength>128000</maxMessageLength>
+        </syslogConfig>
+
+
+        <!-- use lazy initialization so that network connection is not opened until first write -->
+        <lazy>true</lazy>
+    </appender>
+
+    <appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="PAPERTRAIL" />
+    </appender>
+
+    <root level="DEBUG">
+        <appender-ref ref="ASYNC" />
+    </root>
+
+</configuration>
